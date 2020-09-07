@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    // 将对应属性抽取到样式中去
+
+    <TextView
+        style="@style/TitleStyle"
+        android:text="功能列表" />
+
+
+    <com.itheima.mobilesafe.view.FocusTextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:padding="5dp"
+        android:singleLine="true"
+        android:text="秋天悄悄过去,留下小秘密!!!,秋天悄悄过去,留下小秘密!!!,秋天悄悄过去,留下小秘密!!!,秋天悄悄过去,留下小秘密!!!"
+        android:textColor="#000">
+
+    </com.itheima.mobilesafe.view.FocusTextView>
+
+    // 填充慢剩余区域match_parent
+    <GridView
+        android:id="@+id/gv_home"
+        android:verticalSpacing="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:numColumns="3">
+    </GridView>
+</LinearLayout>
