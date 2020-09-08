@@ -99,7 +99,7 @@ public class HomeActivity extends AppCompatActivity {
         final AlertDialog alertDialog = builder.create();
         final View topView = View.inflate(getApplicationContext(),R.layout.dialog_set_psd,null);
 
-        alertDialog.setView(topView);
+        alertDialog.setView(topView,0,0,0,0);
         alertDialog.show();
 
         Button bt_commit = topView.findViewById(R.id.bt_commit);
@@ -148,7 +148,7 @@ public class HomeActivity extends AppCompatActivity {
         final AlertDialog alertDialog = builder.create();
         final View topView = View.inflate(getApplicationContext(),R.layout.dialog_confirm_psd,null);
 
-        alertDialog.setView(topView);
+        alertDialog.setView(topView,0,0,0,0);
         alertDialog.show();
 
         Button bt_commit = topView.findViewById(R.id.bt_commit);
