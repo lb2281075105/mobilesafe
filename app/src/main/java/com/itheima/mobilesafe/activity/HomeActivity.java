@@ -3,6 +3,7 @@ package com.itheima.mobilesafe.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -13,9 +14,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.itheima.mobilesafe.R;
+import com.itheima.mobilesafe.utils.ConstantValue;
+import com.itheima.mobilesafe.utils.SpUtil;
 
 import java.util.List;
 
@@ -47,6 +51,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 switch (i){
                     case 0:
+                        showDialog();
                         break;
                     case 1:
                         break;
@@ -71,6 +76,33 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
+    public void showDialog(){
+
+       String mobile_safe_psd = SpUtil.getString(getApplicationContext(), ConstantValue.MOBILE_SAFE_PSD,"");
+
+       if (TextUtils.isEmpty(mobile_safe_psd)){
+           // 1.设置初始密码对话框
+           showSetPsdDialog();
+       }else {
+           // 2.确认密码对话框
+           showConfirmPsdDialog();
+       }
+
+    }
+    public void showSetPsdDialog(){
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        AlertDialog alertDialog = builder.create();
+        View view = View.inflate(getApplicationContext(),R.layout.dialog_set_psd,null);
+
+        builder.setView(view);
+        builder.show();
+        
+    }
+    public void showConfirmPsdDialog(){
+
+    }
+
     class MyAdapter extends BaseAdapter{
         @Override
         public int getCount() {
