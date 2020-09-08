@@ -120,6 +120,9 @@ public class HomeActivity extends AppCompatActivity {
 
                         Intent intent = new Intent(getApplicationContext(),TestActivity.class);
                         startActivity(intent);
+                        alertDialog.dismiss();
+
+                        SpUtil.putString(getApplicationContext(),ConstantValue.MOBILE_SAFE_PSD,confirmPsd);
                     }else {
                         Toast.makeText(getApplicationContext(),"请确认密码",0).show();
                     }
@@ -135,8 +138,49 @@ public class HomeActivity extends AppCompatActivity {
             }
         });
     }
-    public void showConfirmPsdDialog(){
 
+    /**
+     * 确认密码对话框
+     */
+    public void showConfirmPsdDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        final AlertDialog alertDialog = builder.create();
+        final View topView = View.inflate(getApplicationContext(),R.layout.dialog_confirm_psd,null);
+
+        alertDialog.setView(topView);
+        alertDialog.show();
+
+        Button bt_commit = topView.findViewById(R.id.bt_commit);
+        Button bt_cancel = topView.findViewById(R.id.bt_cancel);
+
+        bt_commit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String mobile_safe_psd = SpUtil.getString(getApplicationContext(),ConstantValue.MOBILE_SAFE_PSD,"");
+                EditText et_confirm_psd = topView.findViewById(R.id.et_confirm_psd);
+                String confirmPsd = et_confirm_psd.getText().toString();
+
+                if (!TextUtils.isEmpty(confirmPsd)) {
+
+                    if (mobile_safe_psd.equals(confirmPsd)){
+                        Intent intent = new Intent(getApplicationContext(),TestActivity.class);
+                        startActivity(intent);
+                        alertDialog.dismiss();
+                    }else {
+                        Toast.makeText(getApplicationContext(),"请确认密码",0).show();
+                    }
+
+                }else {
+                    Toast.makeText(getApplicationContext(),"请输入密码",0).show();
+                }
+            }
+        });
+        bt_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                alertDialog.dismiss();
+            }
+        });
     }
 
     class MyAdapter extends BaseAdapter{

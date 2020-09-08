@@ -6,14 +6,8 @@
     <TextView
         style="@style/TitleStyle"
         android:background="#f30"
-        android:text="设置密码"/>
-    <EditText
+        android:text="确认密码"/>
 
-        android:hint="设置密码"
-        android:inputType="textPassword"
-        android:id="@+id/et_set_psd"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
     <EditText
         android:inputType="textPassword"
         android:hint="确认密码"
