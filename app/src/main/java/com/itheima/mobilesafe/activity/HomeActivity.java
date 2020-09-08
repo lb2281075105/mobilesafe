@@ -22,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.itheima.mobilesafe.R;
 import com.itheima.mobilesafe.utils.ConstantValue;
+import com.itheima.mobilesafe.utils.Md5Util;
 import com.itheima.mobilesafe.utils.SpUtil;
 
 import java.util.List;
@@ -122,7 +123,7 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(intent);
                         alertDialog.dismiss();
 
-                        SpUtil.putString(getApplicationContext(),ConstantValue.MOBILE_SAFE_PSD,confirmPsd);
+                        SpUtil.putString(getApplicationContext(),ConstantValue.MOBILE_SAFE_PSD, Md5Util.encoder(confirmPsd));
                     }else {
                         Toast.makeText(getApplicationContext(),"请确认密码",0).show();
                     }
@@ -162,7 +163,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 if (!TextUtils.isEmpty(confirmPsd)) {
 
-                    if (mobile_safe_psd.equals(confirmPsd)){
+                    if (mobile_safe_psd.equals(Md5Util.encoder(confirmPsd))){
                         Intent intent = new Intent(getApplicationContext(),TestActivity.class);
                         startActivity(intent);
                         alertDialog.dismiss();
