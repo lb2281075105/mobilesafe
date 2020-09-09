@@ -57,7 +57,7 @@ public class Setup2Activity extends AppCompatActivity {
     public void nextPage(View view){
 
         if (!siv_sim.isCheck()){
-            ToastUtil.show(getApplicationContext(),"SIM卡未绑定");
+            ToastUtil.show(getApplicationContext(),"请绑定SIM卡");
             return;
         }
         Intent intent = new Intent(this,Setup3Activity.class);
