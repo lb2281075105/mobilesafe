@@ -16,7 +16,6 @@
      <TextView
          android:paddingTop="5dp"
          android:paddingLeft="5dp"
-         android:drawableLeft="@android:drawable/star_big_on"
          android:textSize="18sp"
          android:text="报警短信会发送给安全号码"
          android:gravity="center_vertical"
