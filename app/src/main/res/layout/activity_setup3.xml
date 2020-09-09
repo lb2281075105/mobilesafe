@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+     <TextView
+         android:text="3设置安全密码"
+         style="@style/TitleStyle"/>
+     <TextView
+         android:textSize="20sp"
+         android:paddingTop="5dp"
+         android:paddingLeft="5dp"
+         android:text="SIM卡变更后:"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"/>
+     <TextView
+         android:paddingTop="5dp"
+         android:paddingLeft="5dp"
+         android:drawableLeft="@android:drawable/star_big_on"
+         android:textSize="18sp"
+         android:text="报警短信会发送给安全号码"
+         android:gravity="center_vertical"
+         android:layout_width="wrap_content"
+         android:layout_height="wrap_content"/>
+
+     <EditText
+         android:id="@+id/et_phone_number"
+         android:hint="请输入电话号码"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"/>
+     <Button
+         android:text="请选择联系人"
+         android:background="@drawable/selector_number_btn_bg"
+         android:id="@+id/bt_select_number"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"/>
+     <LinearLayout
+         android:gravity="center_horizontal"
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content">
+
+          <ImageView
+              android:background="@android:drawable/presence_invisible"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"/>
+
+          <ImageView
+              android:background="@android:drawable/presence_invisible"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"/>
+          <ImageView
+              android:background="@android:drawable/presence_online"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"/>
+          <ImageView
+              android:background="@android:drawable/presence_invisible"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"/>
+     </LinearLayout>
+     <RelativeLayout
+         android:layout_width="match_parent"
+         android:layout_height="match_parent">
+          <ImageView
+              android:layout_centerInParent="true"
+              android:background="@drawable/phone"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"/>
+          <Button
+              android:onClick="prePage"
+              style="@style/previousPageStyle"/>
+          <Button
+              android:onClick="nextPage"
+              style="@style/nextPageStyle"/>
+     </RelativeLayout>
+
+</LinearLayout>

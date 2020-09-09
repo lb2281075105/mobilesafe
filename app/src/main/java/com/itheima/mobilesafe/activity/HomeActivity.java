@@ -119,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
 
                     if (psd.equals(confirmPsd)){
 
-                        Intent intent = new Intent(getApplicationContext(),TestActivity.class);
+                        Intent intent = new Intent(getApplicationContext(),SetupOverActivity.class);
                         startActivity(intent);
                         alertDialog.dismiss();
 
@@ -164,7 +164,7 @@ public class HomeActivity extends AppCompatActivity {
                 if (!TextUtils.isEmpty(confirmPsd)) {
 
                     if (mobile_safe_psd.equals(Md5Util.encoder(confirmPsd))){
-                        Intent intent = new Intent(getApplicationContext(),TestActivity.class);
+                        Intent intent = new Intent(getApplicationContext(),SetupOverActivity.class);
                         startActivity(intent);
                         alertDialog.dismiss();
                     }else {
