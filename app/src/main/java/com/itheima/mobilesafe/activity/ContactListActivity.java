@@ -29,13 +29,14 @@ import java.util.List;
 public class ContactListActivity extends AppCompatActivity {
     private String tag = "ContactListActivity";
     private ListView listView;
-
+    private MyAdapter myAdapter;
     final private List<HashMap<String,String>> contactList = new ArrayList<>();
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
+            myAdapter = new MyAdapter();
             //8,填充数据适配器
-            listView.setAdapter(new MyAdapter());
+            listView.setAdapter(myAdapter);
 
             Log.i(tag,contactList.toString());
         }
@@ -50,9 +51,12 @@ public class ContactListActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                HashMap<String,String> contactMap = contactList.get(i);
+                HashMap<String,String> contactMap = myAdapter.getItem(i);
+                String phone = contactMap.get("phone");
                 Intent intent = new Intent();
-                
+                intent.putExtra("phone",phone);
+                setResult(0,intent);
+                finish();
             }
         });
         initData();

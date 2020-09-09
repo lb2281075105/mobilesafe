@@ -2,6 +2,7 @@ package com.itheima.mobilesafe.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -10,6 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.itheima.mobilesafe.R;
+import com.itheima.mobilesafe.utils.ConstantValue;
+import com.itheima.mobilesafe.utils.SpUtil;
+import com.itheima.mobilesafe.utils.ToastUtil;
 
 public class Setup3Activity extends AppCompatActivity {
     private Button bt_select_number;
@@ -25,8 +29,13 @@ public class Setup3Activity extends AppCompatActivity {
         initUI();
     }
     public void initUI(){
+
+
         bt_select_number = findViewById(R.id.bt_select_number);
         et_phone_number = findViewById(R.id.et_phone_number);
+
+        String contact_phone = SpUtil.getString(this,ConstantValue.CONTACT_PHONE,"");
+        et_phone_number.setText(contact_phone);
 
         bt_select_number.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -36,7 +45,25 @@ public class Setup3Activity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (data != null ){
+            et_phone_number.setText(data.getStringExtra("phone").replace(" ","").trim());
+            SpUtil.putString(getApplicationContext(), ConstantValue.CONTACT_PHONE,et_phone_number.getText().toString());
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+    }
+
     public void nextPage(View view){
+
+        if (TextUtils.isEmpty(et_phone_number.getText().toString())){
+            ToastUtil.show(getApplicationContext(),"请选择联系人电话");
+            return;
+        }
+
         Intent intent = new Intent(this,Setup4Activity.class);
         startActivity(intent);
         finish();
