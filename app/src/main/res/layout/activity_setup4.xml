@@ -50,7 +50,7 @@
               android:onClick="prePage"
               style="@style/previousPageStyle"/>
           <Button
-              android:text="设置完成"
+              android:text="下一步"
               android:onClick="nextPage"
               style="@style/nextPageStyle"/>
      </RelativeLayout>
