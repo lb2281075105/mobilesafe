@@ -15,7 +15,7 @@ import com.itheima.mobilesafe.utils.ConstantValue;
 import com.itheima.mobilesafe.utils.SpUtil;
 import com.itheima.mobilesafe.utils.ToastUtil;
 
-public class Setup3Activity extends AppCompatActivity {
+public class Setup3Activity extends BaseSetupActivity {
     private Button bt_select_number;
     private EditText et_phone_number;
 
@@ -57,8 +57,8 @@ public class Setup3Activity extends AppCompatActivity {
 
     }
 
-    public void nextPage(View view){
-
+    @Override
+    protected void showNextPage() {
         if (TextUtils.isEmpty(et_phone_number.getText().toString())){
             ToastUtil.show(getApplicationContext(),"请选择联系人电话");
             return;
@@ -69,11 +69,21 @@ public class Setup3Activity extends AppCompatActivity {
         finish();
         overridePendingTransition(R.anim.next_in_anim, R.anim.next_out_anim);
     }
-    public void prePage(View view){
+
+    @Override
+    protected void showPrePage() {
         Intent intent = new Intent(this,Setup2Activity.class);
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.pre_in_anim, R.anim.pre_out_anim);
+    }
+    @Override
+    public void nextPage(View view) {
+        super.nextPage(view);
+    }
 
+    @Override
+    public void prePage(View view) {
+        super.prePage(view);
     }
 }

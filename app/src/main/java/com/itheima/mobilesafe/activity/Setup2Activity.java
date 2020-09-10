@@ -17,7 +17,7 @@ import com.itheima.mobilesafe.utils.SpUtil;
 import com.itheima.mobilesafe.utils.ToastUtil;
 import com.itheima.mobilesafe.view.SettingItemView;
 
-public class Setup2Activity extends AppCompatActivity {
+public class Setup2Activity extends BaseSetupActivity {
     private SettingItemView siv_sim;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -54,8 +54,10 @@ public class Setup2Activity extends AppCompatActivity {
             }
         });
     }
-    public void nextPage(View view){
 
+
+    @Override
+    protected void showNextPage() {
         if (!siv_sim.isCheck()){
             ToastUtil.show(getApplicationContext(),"请绑定SIM卡");
             return;
@@ -65,11 +67,22 @@ public class Setup2Activity extends AppCompatActivity {
         finish();
         overridePendingTransition(R.anim.next_in_anim, R.anim.next_out_anim);
     }
-    public void prePage(View view){
+
+    @Override
+    protected void showPrePage() {
         Intent intent = new Intent(this,Setup1Activity.class);
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.pre_in_anim, R.anim.pre_out_anim);
+    }
 
+    @Override
+    public void nextPage(View view) {
+        super.nextPage(view);
+    }
+
+    @Override
+    public void prePage(View view) {
+        super.prePage(view);
     }
 }

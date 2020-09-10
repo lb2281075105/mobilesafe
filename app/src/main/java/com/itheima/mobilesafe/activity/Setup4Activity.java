@@ -14,7 +14,7 @@ import com.itheima.mobilesafe.utils.ConstantValue;
 import com.itheima.mobilesafe.utils.SpUtil;
 import com.itheima.mobilesafe.utils.ToastUtil;
 
-public class Setup4Activity extends AppCompatActivity {
+public class Setup4Activity extends BaseSetupActivity {
     private CheckBox checkBox;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,7 +49,8 @@ public class Setup4Activity extends AppCompatActivity {
     }
 
 
-    public void nextPage(View view){
+    @Override
+    protected void showNextPage() {
         if (checkBox.isChecked()){
             Intent intent = new Intent(this,SetupOverActivity.class);
             startActivity(intent);
@@ -59,13 +60,22 @@ public class Setup4Activity extends AppCompatActivity {
         }else {
             ToastUtil.show(getApplicationContext(),"请开启防盗保护");
         }
-
     }
-    public void prePage(View view){
+
+    @Override
+    protected void showPrePage() {
         Intent intent = new Intent(this,Setup3Activity.class);
         startActivity(intent);
         finish();
         overridePendingTransition(R.anim.pre_in_anim, R.anim.pre_out_anim);
+    }
+    @Override
+    public void nextPage(View view) {
+        super.nextPage(view);
+    }
 
+    @Override
+    public void prePage(View view) {
+        super.prePage(view);
     }
 }
