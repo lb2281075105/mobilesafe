@@ -23,5 +23,8 @@ public class Setup1Activity extends AppCompatActivity {
         Intent intent = new Intent(this,Setup2Activity.class);
         startActivity(intent);
         finish();
+
+        // 设置平移动画
+        overridePendingTransition(R.anim.next_in_anim, R.anim.next_out_anim);
     }
 }
