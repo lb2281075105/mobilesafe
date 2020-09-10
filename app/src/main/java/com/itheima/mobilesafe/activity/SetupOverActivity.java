@@ -2,6 +2,9 @@ package com.itheima.mobilesafe.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -26,5 +29,19 @@ public class SetupOverActivity extends AppCompatActivity {
             finish();
         }
 
+        initUI();
+    }
+    public void initUI(){
+        // TextView ImageView 默认是没有点击事件的
+
+        TextView tv_reset_bg = findViewById(R.id.tv_reset_bg);
+        // 仅仅添加点击事件
+        tv_reset_bg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(),Setup1Activity.class);
+                startActivity(intent);
+            }
+        });
     }
 }
