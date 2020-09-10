@@ -48,6 +48,7 @@
               android:layout_height="wrap_content"/>
 
           <ImageView
+              android:id="@+id/iv_lock"
               android:layout_alignParentRight="true"
               android:src="@drawable/lock"
               android:layout_width="25dp"

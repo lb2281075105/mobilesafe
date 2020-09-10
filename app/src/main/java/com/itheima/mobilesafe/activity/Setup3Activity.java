@@ -63,6 +63,8 @@ public class Setup3Activity extends BaseSetupActivity {
             ToastUtil.show(getApplicationContext(),"请选择联系人电话");
             return;
         }
+        SpUtil.putString(getApplicationContext(), ConstantValue.CONTACT_PHONE,et_phone_number.getText().toString());
+
 
         Intent intent = new Intent(this,Setup4Activity.class);
         startActivity(intent);

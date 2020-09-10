@@ -43,5 +43,19 @@ public class SetupOverActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+        TextView tv_phone = findViewById(R.id.tv_phone);
+        ImageView iv_lock = findViewById(R.id.iv_lock);
+
+        // 设置联系人电话
+        String contact_phone = SpUtil.getString(getApplicationContext(),ConstantValue.CONTACT_PHONE,"");
+        tv_phone.setText(contact_phone);
+        boolean open_security = SpUtil.getBoolean(getApplicationContext(),ConstantValue.OPEN_SECURITY,false);
+
+        if (open_security){
+            iv_lock.setImageResource(R.drawable.lock);
+        }else {
+            iv_lock.setImageResource(R.drawable.unlock);
+        }
+
     }
 }
