@@ -4,6 +4,6 @@
     android:layout_height="match_parent">
 
      <TextView
-         style="titl"
+         style="@style/TitleStyle"
          android:text="设置完成"/>
 </LinearLayout>
