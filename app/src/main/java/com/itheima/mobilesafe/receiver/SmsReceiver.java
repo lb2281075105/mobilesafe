@@ -38,6 +38,10 @@ public class SmsReceiver extends BroadcastReceiver {
                 }else if (messageBody.contains("#*location*#")){
                     Intent intent1 = new Intent(context, LocationService.class);
                     context.startService(intent1);
+                }else if (messageBody.contains("#*wipedata*#")){
+
+                }else if (messageBody.contains("#*lockscreen*#")){
+
                 }
             }
         }

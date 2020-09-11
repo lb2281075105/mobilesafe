@@ -24,6 +24,10 @@ import com.itheima.mobilesafe.R;
 
 import org.json.JSONObject;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.InputStream;
+
 public class SplashActivity extends AppCompatActivity {
 
     private String tag = "SplashActivity";
@@ -101,6 +105,43 @@ public class SplashActivity extends AppCompatActivity {
 
         initUI();
         initAnimation();
+
+
+        initDB("address.db");
+    }
+    public void initDB(String dbName){
+
+        File files = getFilesDir();
+        File file = new File(files,dbName);
+        if (file.exists()){
+            return;
+        }
+        InputStream stream = null;
+        FileOutputStream outputStream = null;
+        try {
+            stream = getAssets().open(dbName);
+            outputStream = new FileOutputStream(file);
+            byte[] bs = new byte[1024];
+            int temp = -1;
+
+            while ((temp = stream.read(bs)) != -1){
+                outputStream.write(bs,0,temp);
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }finally {
+            if (stream != null || outputStream != null){
+                try {
+                    outputStream.close();
+                    stream.close();
+                }catch (Exception e){
+                    e.printStackTrace();
+                }
+            }
+
+
+        }
+
     }
 
     /**
