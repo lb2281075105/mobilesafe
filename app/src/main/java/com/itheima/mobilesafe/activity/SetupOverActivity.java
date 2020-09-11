@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.itheima.mobilesafe.R;
+import com.itheima.mobilesafe.service.LocationService;
 import com.itheima.mobilesafe.utils.ConstantValue;
 import com.itheima.mobilesafe.utils.SpUtil;
 
@@ -31,6 +32,7 @@ public class SetupOverActivity extends AppCompatActivity {
 
         initUI();
     }
+
     public void initUI(){
         // TextView ImageView 默认是没有点击事件的
 
