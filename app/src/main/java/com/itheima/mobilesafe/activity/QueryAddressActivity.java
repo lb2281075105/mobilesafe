@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Vibrator;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -60,6 +61,10 @@ public class QueryAddressActivity extends AppCompatActivity {
 //                        }
 //                    });
                     findViewById(R.id.et_address).startAnimation(shake);
+
+                    Vibrator vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
+                    vibrator.vibrate(1000);
+
                 }else {
                     query(phone);
                 }
