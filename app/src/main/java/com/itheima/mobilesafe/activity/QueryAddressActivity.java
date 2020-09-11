@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.animation.Interpolator;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -51,7 +52,13 @@ public class QueryAddressActivity extends AppCompatActivity {
                 String phone = et_address.getText().toString();
                 if (TextUtils.isEmpty(phone)){
                     Animation shake = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.shake);
-
+                        // 插补器
+//                    shake.setInterpolator(new Interpolator() {
+//                        @Override
+//                        public float getInterpolation(float v) {
+//                            return 0;
+//                        }
+//                    });
                     findViewById(R.id.et_address).startAnimation(shake);
                 }else {
                     query(phone);
