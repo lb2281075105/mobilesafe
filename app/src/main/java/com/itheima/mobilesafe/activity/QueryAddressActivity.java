@@ -1,12 +1,16 @@
 package com.itheima.mobilesafe.activity;
 
+import android.animation.Animator;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.Editable;
+import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -45,7 +49,13 @@ public class QueryAddressActivity extends AppCompatActivity {
             public void onClick(View view) {
 
                 String phone = et_address.getText().toString();
-                query(phone);
+                if (TextUtils.isEmpty(phone)){
+                    Animation shake = AnimationUtils.loadAnimation(getApplicationContext(),R.anim.shake);
+
+                    findViewById(R.id.et_address).startAnimation(shake);
+                }else {
+                    query(phone);
+                }
             }
         });
         et_address.addTextChangedListener(new TextWatcher() {
