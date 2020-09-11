@@ -3,6 +3,8 @@ package com.itheima.mobilesafe.activity;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -42,6 +44,23 @@ public class QueryAddressActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                String phone = et_address.getText().toString();
+                query(phone);
+            }
+        });
+        et_address.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
                 String phone = et_address.getText().toString();
                 query(phone);
             }
