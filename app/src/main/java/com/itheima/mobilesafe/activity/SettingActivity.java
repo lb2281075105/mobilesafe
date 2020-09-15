@@ -13,9 +13,11 @@ import com.itheima.mobilesafe.service.AddressService;
 import com.itheima.mobilesafe.utils.ConstantValue;
 import com.itheima.mobilesafe.utils.ServiceUtil;
 import com.itheima.mobilesafe.utils.SpUtil;
+import com.itheima.mobilesafe.view.SettingClickView;
 import com.itheima.mobilesafe.view.SettingItemView;
 
 public class SettingActivity extends AppCompatActivity {
+    private String[] mToastStyle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +29,31 @@ public class SettingActivity extends AppCompatActivity {
 
         // 电话归属地设置
         initAddress();
+
+        // 吐司样式
+        initToast();
+    }
+    public void initToast(){
+
+        SettingClickView settingClickView = findViewById(R.id.scv_toast_style);
+        settingClickView.setTitle("设置归属地显示风格");
+
+        mToastStyle = new String[]{"透明","橙色","蓝色","灰色","绿色"};
+        int toast_style = SpUtil.getInt(getApplicationContext(),ConstantValue.TOAST_STYLE,0);
+        settingClickView.setDes(mToastStyle[toast_style]);
+
+
+
+        SettingClickView addressClickView = findViewById(R.id.address_toast_style);
+        addressClickView.setTitle("归属地提示框位置");
+        addressClickView.setDes("设置归属地提示框位置");
+
+        final SettingItemView heiView = findViewById(R.id.hei_address);
+        heiView.setCheck(true);
+
+
+        final SettingItemView chengView = findViewById(R.id.cheng_address);
+        chengView.setCheck(true);
     }
     // 电话归属地设置
     public void initAddress(){
