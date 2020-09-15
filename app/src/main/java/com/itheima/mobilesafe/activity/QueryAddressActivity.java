@@ -63,8 +63,9 @@ public class QueryAddressActivity extends AppCompatActivity {
                     findViewById(R.id.et_address).startAnimation(shake);
 
                     Vibrator vibrator = (Vibrator)getSystemService(VIBRATOR_SERVICE);
-                    vibrator.vibrate(1000);
-
+//                    vibrator.vibrate(1000);
+                    // 声音和抖动循环操作
+                    vibrator.vibrate(new long[]{2000,3000,2000,3000},-1);
                 }else {
                     query(phone);
                 }
