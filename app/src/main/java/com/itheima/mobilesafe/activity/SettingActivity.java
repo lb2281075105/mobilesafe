@@ -60,7 +60,12 @@ public class SettingActivity extends AppCompatActivity {
         SettingClickView addressClickView = findViewById(R.id.address_toast_style);
         addressClickView.setTitle("归属地提示框位置");
         addressClickView.setDes("设置归属地提示框位置");
-
+        addressClickView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),ToastLocalActivity.class));
+            }
+        });
         // 3.
         final SettingItemView heiView = findViewById(R.id.hei_address);
         heiView.setCheck(true);
