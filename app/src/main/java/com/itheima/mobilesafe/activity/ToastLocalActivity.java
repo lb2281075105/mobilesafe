@@ -2,6 +2,7 @@ package com.itheima.mobilesafe.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager.LayoutParams;
@@ -23,6 +24,7 @@ public class ToastLocalActivity extends Activity {
     private WindowManager mWM;
     private int mScreenHeight;
     private int mScreenWidth;
+    private long[] mHits = new long[2];
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -65,8 +67,27 @@ public class ToastLocalActivity extends Activity {
             bt_bottom.setVisibility(View.VISIBLE);
             bt_top.setVisibility(View.INVISIBLE);
         }
+        iv_drag.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.arraycopy(mHits, 1, mHits, 0, mHits.length-1);
+                mHits[mHits.length-1] = SystemClock.uptimeMillis();
+                if(mHits[mHits.length-1]-mHits[0]<500){
+                    //满足双击事件后,调用代码
+                    int left = mScreenWidth/2 - iv_drag.getWidth()/2;
+                    int top = mScreenHeight/2 - iv_drag.getHeight()/2;
+                    int right = mScreenWidth/2+iv_drag.getWidth()/2;
+                    int bottom = mScreenHeight/2+iv_drag.getHeight()/2;
 
+                    //控件按以上规则显示
+                    iv_drag.layout(left, top, right, bottom);
 
+                    //存储最终位置
+                    SpUtil.putInt(getApplicationContext(), ConstantValue.LOCATION_X, iv_drag.getLeft());
+                    SpUtil.putInt(getApplicationContext(), ConstantValue.LOCATION_Y, iv_drag.getTop());
+                }
+            }
+        });
 
         //监听某一个控件的拖拽过程(按下(1),移动(多次),抬起(1))
         iv_drag.setOnTouchListener(new View.OnTouchListener() {
@@ -125,6 +146,17 @@ public class ToastLocalActivity extends Activity {
                         //2,告知移动的控件,按计算出来的坐标去做展示
                         iv_drag.layout(left, top, right, bottom);
 
+                        //指定宽高都为WRAP_CONTENT
+//                        RelativeLayout.LayoutParams layoutParams1 = new RelativeLayout.LayoutParams(
+//                                RelativeLayout.LayoutParams.WRAP_CONTENT,
+//                                RelativeLayout.LayoutParams.WRAP_CONTENT);
+//
+//                        //将左上角的坐标作用在iv_drag对应规则参数上
+//                        layoutParams1.leftMargin = left;
+//                        layoutParams1.topMargin = top;
+//                        //将以上规则作用在iv_drag上
+//                        iv_drag.setLayoutParams(layoutParams1);
+
                         //3,重置一次其实坐标
                         startX = (int) event.getRawX();
                         startY = (int) event.getRawY();
@@ -137,7 +169,10 @@ public class ToastLocalActivity extends Activity {
                         break;
                 }
                 //在当前的情况下返回false不响应事件,返回true才会响应事件
-                return true;
+
+                //既要响应点击事件,又要响应拖拽过程,则此返回值结果需要修改为false
+                // 返回false的时候 iv_drag点击方法才能生效
+                return false;
             }
         });
     }
