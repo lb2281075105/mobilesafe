@@ -1,7 +1,10 @@
 package com.itheima.mobilesafe.service;
 
 import android.app.Service;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.PixelFormat;
 import android.os.Handler;
 import android.os.IBinder;
@@ -9,6 +12,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -40,6 +44,11 @@ public class AddressService extends Service {
         };
     };
     private int[] mDrawableIds;
+
+    private int mScreenHeight;
+    private int mScreenWidth;
+
+    private InnerOutCallReceiver mInnerOutCallReceiver;
     @Override
     public void onCreate() {
         // 第一次开启服务,就需要管理吐司的显示
@@ -49,7 +58,21 @@ public class AddressService extends Service {
 
         Log.i(TAG,"服务开启");
 
+        // 监听播出电话的广播过滤条件
+        IntentFilter intentFilter = new IntentFilter();
+        intentFilter.addAction(Intent.ACTION_NEW_OUTGOING_CALL);
+
+        mInnerOutCallReceiver = new InnerOutCallReceiver();
+        registerReceiver(mInnerOutCallReceiver,intentFilter);
+
         super.onCreate();
+    }
+    class InnerOutCallReceiver extends BroadcastReceiver{
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            String phone = getResultData();
+            showToast(phone);
+        }
     }
 
     class MYPhoneStateListener extends PhoneStateListener{
@@ -94,6 +117,74 @@ public class AddressService extends Service {
         mViewToast = View.inflate(this, R.layout.toast_view, null);
         tv_toast = (TextView) mViewToast.findViewById(R.id.tv_toast);
 
+
+        mWM = (WindowManager) getSystemService(WINDOW_SERVICE);
+        mScreenHeight = mWM.getDefaultDisplay().getHeight();
+        mScreenWidth = mWM.getDefaultDisplay().getWidth();
+
+        mViewToast.setOnTouchListener(new View.OnTouchListener() {
+            private int startX;
+            private int startY;
+            //对不同的事件做不同的逻辑处理
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                switch (event.getAction()) {
+                    case MotionEvent.ACTION_DOWN:
+                        startX = (int) event.getRawX();
+                        startY = (int) event.getRawY();
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        int moveX = (int) event.getRawX();
+                        int moveY = (int) event.getRawY();
+
+                        int disX = moveX-startX;
+                        int disY = moveY-startY;
+
+                        params.x = params.x + disX;
+                        params.y = params.y + disY;
+
+                        if (params.x < 0){
+                            params.x = 0;
+                        }
+
+                        if (params.y < 0){
+                            params.y = 0;
+                        }
+
+                        // params.y代表是左上角y的坐标
+                        mWM.updateViewLayout(mViewToast,params);
+
+                        if (params.x > mScreenWidth - mViewToast.getWidth()){
+                            params.x = mScreenWidth - mViewToast.getWidth();
+                        }
+
+                        if (params.y > mScreenWidth - mViewToast.getWidth() - 22){
+                            params.y = mScreenWidth - mViewToast.getHeight() - 22;
+                        }
+
+                        //3,重置一次其实坐标
+                        startX = (int) event.getRawX();
+                        startY = (int) event.getRawY();
+
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        //4,存储移动到的位置
+                        SpUtil.putInt(getApplicationContext(), ConstantValue.LOCATION_X, params.x);
+                        SpUtil.putInt(getApplicationContext(), ConstantValue.LOCATION_Y, params.y);
+                        break;
+                }
+                //在当前的情况下返回false不响应事件,返回true才会响应事件
+
+                //既要响应点击事件,又要响应拖拽过程,则此返回值结果需要修改为false
+                // 返回false的时候 iv_drag点击方法才能生效
+                return true;
+            }
+        });
+
+
+        // params.x 为吐司左上角x的坐标
+        params.x = SpUtil.getInt(getApplicationContext(),ConstantValue.LOCATION_X,0);
+        params.y = SpUtil.getInt(getApplicationContext(),ConstantValue.LOCATION_Y,0);
         //从sp中获取色值文字的索引,匹配图片,用作展示
         mDrawableIds = new int[]{
                 R.drawable.call_locate_white,
