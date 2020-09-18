@@ -225,6 +225,9 @@ public class AddressService extends Service {
         if (mTm != null && myPhoneStateListener != null){
             mTm.listen(myPhoneStateListener,PhoneStateListener.LISTEN_NONE);
         }
+        if (mInnerOutCallReceiver != null){
+            unregisterReceiver(mInnerOutCallReceiver);
+        }
         super.onDestroy();
 
     }
