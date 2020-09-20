@@ -123,11 +123,10 @@ public class BlackNumberActivity extends AppCompatActivity {
                 numberInfo.phone = et_phone.getText().toString();
                 numberInfo.mode = mode + "";
 
-                Log.e("HHH",mode + "");
                 blackNumberInfos.add(0,numberInfo);
 
                 if (myAdapter != null){
-                    lv_blacknumber.deferNotifyDataSetChanged();
+                    myAdapter.notifyDataSetChanged();
                 }
                 alertDialog.dismiss();
             }
@@ -157,7 +156,7 @@ public class BlackNumberActivity extends AppCompatActivity {
         }
 
         @Override
-        public View getView(int i, View view, ViewGroup viewGroup) {
+        public View getView(final int i, View view, ViewGroup viewGroup) {
             View item = View.inflate(getApplicationContext(), R.layout.blacknumber_item,null);
 
             BlackNumberInfo info = blackNumberInfos.get(i);
@@ -168,7 +167,11 @@ public class BlackNumberActivity extends AppCompatActivity {
             btn_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    blackNumberDao.delete(blackNumberInfos.get(i).getPhone());
+                    blackNumberInfos.remove(i);
+                    if (myAdapter != null){
+                        myAdapter.notifyDataSetChanged();
+                    }
                 }
             });
             tv_phone.setText(info.getPhone());
