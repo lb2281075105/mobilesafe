@@ -58,6 +58,8 @@ public class HomeActivity extends AppCompatActivity {
                         showDialog();
                         break;
                     case 1:
+                        startActivity(new Intent(getApplicationContext(),BlackNumberActivity.class));
+
                         break;
                     case 2:
                         break;
