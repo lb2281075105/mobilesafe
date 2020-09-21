@@ -2,28 +2,62 @@ package com.itheima.mobilesafe.activity;
 
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.os.StatFs;
 import android.text.format.Formatter;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.itheima.mobilesafe.R;
+import com.itheima.mobilesafe.db.domain.AppInfo;
+import com.itheima.mobilesafe.engine.AppInfoProvider;
+
+import java.util.List;
 
 public class AppManagerActivity extends AppCompatActivity {
 
     private TextView tv_left;
     private TextView tv_right;
     private ListView listView;
+    private List<AppInfo> appInfoList;
+    private MyAdapter myAdapter;
+
+    private Handler mHandler = new Handler(){
+        @Override
+        public void handleMessage(@NonNull Message msg) {
+            myAdapter = new MyAdapter();
+            listView.setAdapter(myAdapter);
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_appmanager);
         initUI();
+
+        initData();
+    }
+
+    private void initData() {
+        new Thread(){
+            @Override
+            public void run() {
+                appInfoList = AppInfoProvider.getAppInfoList(getApplicationContext());
+
+                mHandler.sendEmptyMessage(0);
+
+            }
+        }.start();
     }
 
     private void initUI() {
@@ -44,6 +78,50 @@ public class AppManagerActivity extends AppCompatActivity {
         tv_right.setText("sd卡可用:"+sdMemoryAvailSpace);
     }
 
+    private class MyAdapter extends BaseAdapter{
+        @Override
+        public int getCount() {
+            return appInfoList.size();
+        }
+
+        @Override
+        public AppInfo getItem(int i) {
+            return appInfoList.get(i);
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(int i, View view, ViewGroup viewGroup) {
+
+            ViewHolder viewHolder = null;
+            if (view == null){
+                view = View.inflate(getApplicationContext(), R.layout.activity_appmanager_item,null);
+                viewHolder = new ViewHolder();
+                viewHolder.tv_top = view.findViewById(R.id.tv_top);
+                viewHolder.tv_bottom = view.findViewById(R.id.tv_bottom);
+                viewHolder.iv_icon = view.findViewById(R.id.iv_icon);
+                view.setTag(viewHolder);
+            }else {
+                viewHolder = (ViewHolder) view.getTag();
+            }
+            AppInfo appInfo = appInfoList.get(i);
+            viewHolder.tv_top.setText(appInfo.name);
+            viewHolder.tv_bottom.setText(appInfo.packageName);
+            viewHolder.iv_icon.setImageDrawable(appInfo.icon);
+
+            return view;
+        }
+    }
+    // 静态的 不会创建多个对象
+    static class ViewHolder {
+        TextView tv_top;
+        TextView tv_bottom;
+        ImageView iv_icon;
+    }
     //int代表多少个G
     /**
      * 返回值结果单位为byte = 8bit,最大结果为2147483647 bytes
