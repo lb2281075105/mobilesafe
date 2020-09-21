@@ -157,14 +157,23 @@ public class BlackNumberActivity extends AppCompatActivity {
 
         @Override
         public View getView(final int i, View view, ViewGroup viewGroup) {
-            View item = View.inflate(getApplicationContext(), R.layout.blacknumber_item,null);
 
+            ViewHolder viewHolder = null;
+            if (view == null){
+                view = View.inflate(getApplicationContext(), R.layout.blacknumber_item,null);
+                viewHolder = new ViewHolder();
+                viewHolder.tv_phone = view.findViewById(R.id.tv_phone);
+                viewHolder.tv_mode = view.findViewById(R.id.tv_mode);
+                viewHolder.btn_delete = view.findViewById(R.id.iv_delete);
+
+                view.setTag(viewHolder);
+            }else {
+                viewHolder = (ViewHolder) view.getTag();
+            }
+            
             BlackNumberInfo info = blackNumberInfos.get(i);
-            TextView tv_phone = item.findViewById(R.id.tv_phone);
-            TextView tv_mode = item.findViewById(R.id.tv_mode);
-            ImageView btn_delete = item.findViewById(R.id.iv_delete);
 
-            btn_delete.setOnClickListener(new View.OnClickListener() {
+            viewHolder.btn_delete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     blackNumberDao.delete(blackNumberInfos.get(i).getPhone());
@@ -174,22 +183,29 @@ public class BlackNumberActivity extends AppCompatActivity {
                     }
                 }
             });
-            tv_phone.setText(info.getPhone());
+            viewHolder.tv_phone.setText(info.getPhone());
 
             int mode = Integer.parseInt(info.getMode());
             switch (mode){
                 case 1:
-                    tv_mode.setText("拦截短信");
+                    viewHolder.tv_mode.setText("拦截短信");
                     break;
                 case 2:
-                    tv_mode.setText("拦截电话");
+                    viewHolder.tv_mode.setText("拦截电话");
                     break;
                 case 3:
-                    tv_mode.setText("拦截所有");
+                    viewHolder.tv_mode.setText("拦截所有");
                     break;
             }
 
-            return item;
+            return view;
         }
+    }
+
+    private class ViewHolder {
+        TextView tv_phone;
+        TextView tv_mode;
+        ImageView btn_delete;
+
     }
 }
