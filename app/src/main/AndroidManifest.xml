@@ -47,6 +47,7 @@
         
         <service android:name=".service.LocationService" />
         <service android:name=".service.AddressService" />
+        <service android:name=".service.BlackNumberService"/>
 
     </application>
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />

@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.itheima.mobilesafe.R;
 import com.itheima.mobilesafe.service.AddressService;
+import com.itheima.mobilesafe.service.BlackNumberService;
 import com.itheima.mobilesafe.utils.ConstantValue;
 import com.itheima.mobilesafe.utils.ServiceUtil;
 import com.itheima.mobilesafe.utils.SpUtil;
@@ -68,8 +69,22 @@ public class SettingActivity extends AppCompatActivity {
         });
         // 3.
         final SettingItemView heiView = findViewById(R.id.hei_address);
-        heiView.setCheck(true);
+        boolean isRunning = ServiceUtil.isRunning(getApplicationContext(), "com.itheima.mobilesafe.service.BlackNumberService");
 
+        heiView.setCheck(isRunning);
+        heiView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean ischeck = heiView.isCheck();
+                heiView.setCheck(!ischeck);
+                Log.i("SettingActivity", "ischeck" + !ischeck);
+                if (!ischeck) {
+                    startService(new Intent(getApplicationContext(), BlackNumberService.class));
+                } else {
+                    stopService(new Intent(getApplicationContext(), BlackNumberService.class));
+                }
+            }
+        });
 
         // 4.
         final SettingItemView chengView = findViewById(R.id.cheng_address);
