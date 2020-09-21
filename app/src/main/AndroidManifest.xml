@@ -33,6 +33,7 @@
             android:theme="@android:style/Theme.Translucent.NoTitleBar"/>
         <activity android:name=".activity.SetupOverActivity" />
         <activity android:name=".activity.BlackNumberActivity"/>
+        <activity android:name=".activity.AppManagerActivity"/>
 
         <receiver android:name=".receiver.BootReceiver">
             <intent-filter>
