@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -35,15 +36,24 @@ public class BlackNumberActivity extends AppCompatActivity {
     private List<BlackNumberInfo> blackNumberInfos;
     private int mode = 1;
     private MyAdapter myAdapter;
+    private boolean mIsLoad = false;
 
+    private int mCount;
     private Handler mHandler = new Handler(){
         @Override
         public void handleMessage(@NonNull Message msg) {
-            myAdapter = new MyAdapter();
+            if (myAdapter == null){
+                myAdapter = new MyAdapter();
 //            blackNumberInfos = (List<BlackNumberInfo>) msg.obj;
-            lv_blacknumber.setAdapter(myAdapter);
+                lv_blacknumber.setAdapter(myAdapter);
+            }else {
+                myAdapter.notifyDataSetChanged();
+            }
         }
     };
+
+
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,13 +70,15 @@ public class BlackNumberActivity extends AppCompatActivity {
             public void run() {
 
                 blackNumberDao = BlackNumberDao.getInstance(getApplicationContext());
-                blackNumberInfos = blackNumberDao.findAll();
+                blackNumberInfos = blackNumberDao.find(0);
+                mCount = blackNumberDao.getCount();
                 Message message = new Message();
                 message.obj = blackNumberInfos;
                 mHandler.sendMessage(message);
             }
         }.start();
     }
+
 
     private void initUI() {
         btn_add = findViewById(R.id.btn_add);
@@ -76,6 +88,36 @@ public class BlackNumberActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 showDialog();
+            }
+        });
+        lv_blacknumber.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+                if (blackNumberInfos != null){
+                    if (i == AbsListView.OnScrollListener.SCROLL_STATE_IDLE && lv_blacknumber.getLastVisiblePosition() >= blackNumberInfos.size() - 1 && !mIsLoad){
+
+                        if (mCount > blackNumberInfos.size()){
+                            new Thread(){
+                                @Override
+                                public void run() {
+                                    blackNumberDao = BlackNumberDao.getInstance(getApplicationContext());
+                                    List<BlackNumberInfo> moreData = blackNumberDao.find(blackNumberInfos.size());
+
+                                    blackNumberInfos.addAll(moreData);
+                                    Message message = new Message();
+                                    message.obj = blackNumberInfos;
+                                    mHandler.sendMessage(message);
+                                }
+                            }.start();
+                        }
+
+                    }
+                }
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+
             }
         });
     }
@@ -170,7 +212,7 @@ public class BlackNumberActivity extends AppCompatActivity {
             }else {
                 viewHolder = (ViewHolder) view.getTag();
             }
-            
+
             BlackNumberInfo info = blackNumberInfos.get(i);
 
             viewHolder.btn_delete.setOnClickListener(new View.OnClickListener() {
@@ -202,10 +244,10 @@ public class BlackNumberActivity extends AppCompatActivity {
         }
     }
 
-    private class ViewHolder {
+    // 静态的 不会创建多个对象
+    static class ViewHolder {
         TextView tv_phone;
         TextView tv_mode;
         ImageView btn_delete;
-
     }
 }
