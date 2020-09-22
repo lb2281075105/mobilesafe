@@ -8,6 +8,7 @@ import android.os.StatFs;
 import android.text.format.Formatter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AbsListView;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -37,10 +38,14 @@ public class AppManagerActivity extends AppCompatActivity {
         public void handleMessage(@NonNull Message msg) {
             myAdapter = new MyAdapter();
             listView.setAdapter(myAdapter);
+            if (tv_des != null && mCustomList != null){
+                tv_des.setText("用户应用("+ mCustomList.size() +")");
+            }
         }
     };
     private List<AppInfo> mCustomList;
     private List<AppInfo> mSystomList;
+    private TextView tv_des;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,6 +57,7 @@ public class AppManagerActivity extends AppCompatActivity {
     }
 
     private void initData() {
+        tv_des = findViewById(R.id.tv_des);
         new Thread(){
             @Override
             public void run() {
@@ -72,6 +78,25 @@ public class AppManagerActivity extends AppCompatActivity {
 
             }
         }.start();
+        listView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(AbsListView absListView, int i) {
+
+            }
+
+            @Override
+            public void onScroll(AbsListView absListView, int i, int i1, int i2) {
+
+                if (mCustomList != null && mSystomList != null){
+                    if (i >= mCustomList.size() + 1){
+                        tv_des.setText("系统应用("+ mSystomList.size() +")");
+                    }else {
+                        tv_des.setText("用户应用("+ mCustomList.size() +")");
+                    }
+                }
+
+            }
+        });
     }
 
     private void initUI() {
