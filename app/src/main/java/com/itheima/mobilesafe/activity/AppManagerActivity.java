@@ -1,11 +1,15 @@
 package com.itheima.mobilesafe.activity;
 
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.os.StatFs;
+import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,6 +34,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.itheima.mobilesafe.R;
 import com.itheima.mobilesafe.db.domain.AppInfo;
 import com.itheima.mobilesafe.engine.AppInfoProvider;
+import com.itheima.mobilesafe.utils.ToastUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +61,7 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
     private List<AppInfo> mSystomList;
     private TextView tv_des;
     private AppInfo appInfo;
+    private PopupWindow popupWindow;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -155,7 +161,7 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
 
         //1,创建窗体对象,指定宽高
 
-        PopupWindow popupWindow = new PopupWindow(inflate, LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,true);
+        popupWindow = new PopupWindow(inflate, LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,true);
 //        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.function_greenbutton_normal));
         popupWindow.setBackgroundDrawable(new ColorDrawable());
         popupWindow.showAsDropDown(view,120,-view.getHeight());
@@ -167,13 +173,35 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
         switch (view.getId()){
             case R.id.btn_uninstall:
 
+                if (appInfo.isSystem){
+                    ToastUtil.show(getApplicationContext(),"此应用无法卸载");
+                }else {
+                    Intent intent = new Intent("android.intent.action.DELETE");
+                    intent.addCategory("android.intent.category.DEFAULT");
+                    intent.setData(Uri.parse("package:"+appInfo.getPackageName()));
+                    startActivity(intent);
+                }
                 break;
             case R.id.btn_qidong:
 
+                PackageManager packageManager = getPackageManager();
+                Intent intent = packageManager.getLaunchIntentForPackage(appInfo.getPackageName());
+                if (intent != null){
+                    startActivity(intent);
+                }else {
+                    ToastUtil.show(getApplicationContext(),"此应用无法开启");
+                }
                 break;
             case R.id.btn_share:
-
+                Intent intentsend = new Intent(Intent.ACTION_SEND);
+                intentsend.putExtra(Intent.EXTRA_TEXT,"分享一个应用,应用名称为"+appInfo.getName());
+                intentsend.setType("text/plain");
+                startActivity(intentsend);
                 break;
+        }
+        //点击了窗体后消失窗体
+        if(popupWindow!=null){
+            popupWindow.dismiss();
         }
     }
 
