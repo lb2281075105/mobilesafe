@@ -21,6 +21,7 @@ import com.itheima.mobilesafe.R;
 import com.itheima.mobilesafe.db.domain.AppInfo;
 import com.itheima.mobilesafe.engine.AppInfoProvider;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AppManagerActivity extends AppCompatActivity {
@@ -38,6 +39,8 @@ public class AppManagerActivity extends AppCompatActivity {
             listView.setAdapter(myAdapter);
         }
     };
+    private List<AppInfo> mCustomList;
+    private List<AppInfo> mSystomList;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -53,6 +56,17 @@ public class AppManagerActivity extends AppCompatActivity {
             @Override
             public void run() {
                 appInfoList = AppInfoProvider.getAppInfoList(getApplicationContext());
+
+                mSystomList = new ArrayList<AppInfo>();
+                mCustomList = new ArrayList<AppInfo>();
+
+                for (AppInfo appInfo : appInfoList){
+                    if (appInfo.isSystem){
+                        mSystomList.add(appInfo);
+                    }else {
+                        mCustomList.add(appInfo);
+                    }
+                }
 
                 mHandler.sendEmptyMessage(0);
 
@@ -80,13 +94,36 @@ public class AppManagerActivity extends AppCompatActivity {
 
     private class MyAdapter extends BaseAdapter{
         @Override
+        public int getViewTypeCount() {
+            return super.getViewTypeCount() + 1;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (position == 0 || position == mCustomList.size() + 1){
+                return 0;
+            }else {
+                return 1;
+            }
+        }
+
+        @Override
         public int getCount() {
-            return appInfoList.size();
+            return mCustomList.size() + mSystomList.size() + 2;
         }
 
         @Override
         public AppInfo getItem(int i) {
-            return appInfoList.get(i);
+            if (i == 0 || i == mCustomList.size() + 1){
+                return null;
+            }else {
+                if (i < mCustomList.size() + 1){
+                    return mCustomList.get(i - 1);
+                }else {
+                    return mSystomList.get(i - mCustomList.size() - 2);
+                }
+            }
+
         }
 
         @Override
@@ -97,23 +134,51 @@ public class AppManagerActivity extends AppCompatActivity {
         @Override
         public View getView(int i, View view, ViewGroup viewGroup) {
 
-            ViewHolder viewHolder = null;
-            if (view == null){
-                view = View.inflate(getApplicationContext(), R.layout.activity_appmanager_item,null);
-                viewHolder = new ViewHolder();
-                viewHolder.tv_top = view.findViewById(R.id.tv_top);
-                viewHolder.tv_bottom = view.findViewById(R.id.tv_bottom);
-                viewHolder.iv_icon = view.findViewById(R.id.iv_icon);
-                view.setTag(viewHolder);
-            }else {
-                viewHolder = (ViewHolder) view.getTag();
-            }
-            AppInfo appInfo = appInfoList.get(i);
-            viewHolder.tv_top.setText(appInfo.name);
-            viewHolder.tv_bottom.setText(appInfo.packageName);
-            viewHolder.iv_icon.setImageDrawable(appInfo.icon);
+            int type = getItemViewType(i);
+            if (type == 0){
+                ViewTitleHolder viewHolder = null;
+                if (view == null){
+                    view = View.inflate(getApplicationContext(), R.layout.activity_appmanager_item_title,null);
+                    viewHolder = new ViewTitleHolder();
+                    viewHolder.tv_title = view.findViewById(R.id.tv_title);
+                    view.setTag(viewHolder);
+                }else {
+                    viewHolder = (ViewTitleHolder) view.getTag();
+                }
+                if (i == 0){
+                    viewHolder.tv_title.setText("用户应用("+ mCustomList.size()  +")");
+                }else {
+                    viewHolder.tv_title.setText("系统应用("+ mSystomList.size() +")");
+                }
 
-            return view;
+                return view;
+            }else {
+                ViewHolder viewHolder = null;
+                if (view == null){
+                    view = View.inflate(getApplicationContext(), R.layout.activity_appmanager_item,null);
+                    viewHolder = new ViewHolder();
+                    viewHolder.tv_top = view.findViewById(R.id.tv_top);
+                    viewHolder.tv_bottom = view.findViewById(R.id.tv_bottom);
+                    viewHolder.iv_icon = view.findViewById(R.id.iv_icon);
+                    view.setTag(viewHolder);
+                }else {
+                    viewHolder = (ViewHolder) view.getTag();
+                }
+                AppInfo appInfo = getItem(i);
+                viewHolder.tv_top.setText(appInfo.name);
+                viewHolder.tv_bottom.setText(appInfo.packageName);
+                viewHolder.iv_icon.setImageDrawable(appInfo.icon);
+
+                if (appInfo.isSdCard){
+                    viewHolder.tv_bottom.setText("sd卡应用");
+                }else {
+                    viewHolder.tv_bottom.setText("手机应用");
+                }
+                return view;
+            }
+
+
+
         }
     }
     // 静态的 不会创建多个对象
@@ -121,6 +186,11 @@ public class AppManagerActivity extends AppCompatActivity {
         TextView tv_top;
         TextView tv_bottom;
         ImageView iv_icon;
+        TextView tv_title;
+    }
+    // 静态的 不会创建多个对象
+    static class ViewTitleHolder {
+        TextView tv_title;
     }
     //int代表多少个G
     /**
