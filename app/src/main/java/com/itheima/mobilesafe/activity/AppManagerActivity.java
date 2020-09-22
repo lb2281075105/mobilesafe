@@ -1,5 +1,6 @@
 package com.itheima.mobilesafe.activity;
 
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
@@ -8,10 +9,18 @@ import android.os.StatFs;
 import android.text.format.Formatter;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
+import android.view.animation.ScaleAnimation;
 import android.widget.AbsListView;
+import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -25,7 +34,7 @@ import com.itheima.mobilesafe.engine.AppInfoProvider;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AppManagerActivity extends AppCompatActivity {
+public class AppManagerActivity extends AppCompatActivity implements View.OnClickListener{
 
     private TextView tv_left;
     private TextView tv_right;
@@ -46,6 +55,7 @@ public class AppManagerActivity extends AppCompatActivity {
     private List<AppInfo> mCustomList;
     private List<AppInfo> mSystomList;
     private TextView tv_des;
+    private AppInfo appInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -97,6 +107,74 @@ public class AppManagerActivity extends AppCompatActivity {
 
             }
         });
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0 || i == mCustomList.size() + 1){
+                    return;
+                }else {
+                    if (i < mCustomList.size() + 1){
+                        appInfo = mCustomList.get(i - 1);
+                    }else {
+                        appInfo = mSystomList.get(i - mCustomList.size() - 2);
+                    }
+                    showPopupWindow(view);
+                }
+            }
+        });
+    }
+
+    private void showPopupWindow(View view) {
+        View inflate = View.inflate(this, R.layout.popupwindow_layout, null);
+        TextView btn_unstall = inflate.findViewById(R.id.btn_uninstall);
+        TextView btn_qidong = inflate.findViewById(R.id.btn_qidong);
+        TextView btn_share = inflate.findViewById(R.id.btn_share);
+
+        btn_unstall.setOnClickListener( this);
+        btn_qidong.setOnClickListener( this);
+        btn_share.setOnClickListener( this);
+
+        //透明动画(透明--->不透明)
+        AlphaAnimation alphaAnimation = new AlphaAnimation(0, 1);
+        alphaAnimation.setDuration(1000);
+        alphaAnimation.setFillAfter(true);
+
+        //缩放动画
+        ScaleAnimation scaleAnimation = new ScaleAnimation(
+                0, 1,
+                0, 1,
+                Animation.RELATIVE_TO_SELF, 0.5f,
+                Animation.RELATIVE_TO_SELF, 0.5f);
+        scaleAnimation.setDuration(1000);
+        alphaAnimation.setFillAfter(true);
+        //动画集合Set
+        AnimationSet animationSet = new AnimationSet(true);
+        //添加两个动画
+        animationSet.addAnimation(alphaAnimation);
+        animationSet.addAnimation(scaleAnimation);
+
+        //1,创建窗体对象,指定宽高
+
+        PopupWindow popupWindow = new PopupWindow(inflate, LinearLayout.LayoutParams.WRAP_CONTENT,LinearLayout.LayoutParams.WRAP_CONTENT,true);
+//        popupWindow.setBackgroundDrawable(getResources().getDrawable(R.drawable.function_greenbutton_normal));
+        popupWindow.setBackgroundDrawable(new ColorDrawable());
+        popupWindow.showAsDropDown(view,120,-view.getHeight());
+        inflate.startAnimation(animationSet);
+    }
+
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()){
+            case R.id.btn_uninstall:
+
+                break;
+            case R.id.btn_qidong:
+
+                break;
+            case R.id.btn_share:
+
+                break;
+        }
     }
 
     private void initUI() {
