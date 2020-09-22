@@ -1,4 +1,4 @@
-package com.itheima.mobilesafe74.db.domain;
+package com.itheima.mobilesafe.db.domain;
 
 import android.graphics.drawable.Drawable;
 

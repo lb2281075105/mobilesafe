@@ -1,4 +1,4 @@
-package com.itheima.mobilesafe74.engine;
+package com.itheima.mobilesafe.engine;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.itheima.mobilesafe74.R;
-import com.itheima.mobilesafe74.db.domain.ProcessInfo;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.MemoryInfo;
@@ -18,7 +16,11 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 
+import com.itheima.mobilesafe.R;
+import com.itheima.mobilesafe.db.domain.ProcessInfo;
+
 public class ProcessInfoProvider {
+
 	//获取进程总数的方法
 	public static int getProcessCount(Context ctx){
 		//1,获取activityManager
@@ -51,14 +53,16 @@ public class ProcessInfoProvider {
 	 * @return 返回总的内存数	单位为bytes 返回0说明异常
 	 */
 	public static long getTotalSpace(Context ctx){
-		/*//1,获取activityManager
+		/**
+		//1,获取activityManager
 		ActivityManager am = (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
 		//2,构建存储可用内存的对象
 		MemoryInfo memoryInfo = new MemoryInfo();
 		//3,给memoryInfo对象赋(可用内存)值
 		am.getMemoryInfo(memoryInfo);
 		//4,获取memoryInfo中相应可用内存大小
-		return memoryInfo.totalMem;*/
+		return memoryInfo.totalMem;
+		*/
 		
 		//内存大小写入文件中,读取proc/meminfo文件,读取第一行,获取数字字符,转换成bytes返回
 		FileReader fileReader  = null;
@@ -132,7 +136,7 @@ public class ProcessInfoProvider {
 			} catch (NameNotFoundException e) {
 				//需要处理
 				processInfo.name = info.processName;
-				processInfo.icon = ctx.getResources().getDrawable(R.drawable.ic_launcher);
+				processInfo.icon = ctx.getResources().getDrawable(R.drawable.home_apps);
 				processInfo.isSystem = true;
 				e.printStackTrace();
 			}

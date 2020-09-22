@@ -74,26 +74,7 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
 
     private void initData() {
         tv_des = findViewById(R.id.tv_des);
-        new Thread(){
-            @Override
-            public void run() {
-                appInfoList = AppInfoProvider.getAppInfoList(getApplicationContext());
 
-                mSystomList = new ArrayList<AppInfo>();
-                mCustomList = new ArrayList<AppInfo>();
-
-                for (AppInfo appInfo : appInfoList){
-                    if (appInfo.isSystem){
-                        mSystomList.add(appInfo);
-                    }else {
-                        mCustomList.add(appInfo);
-                    }
-                }
-
-                mHandler.sendEmptyMessage(0);
-
-            }
-        }.start();
         listView.setOnScrollListener(new AbsListView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {
@@ -128,6 +109,31 @@ public class AppManagerActivity extends AppCompatActivity implements View.OnClic
                 }
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        new Thread(){
+            @Override
+            public void run() {
+                appInfoList = AppInfoProvider.getAppInfoList(getApplicationContext());
+
+                mSystomList = new ArrayList<AppInfo>();
+                mCustomList = new ArrayList<AppInfo>();
+
+                for (AppInfo appInfo : appInfoList){
+                    if (appInfo.isSystem){
+                        mSystomList.add(appInfo);
+                    }else {
+                        mCustomList.add(appInfo);
+                    }
+                }
+
+                mHandler.sendEmptyMessage(0);
+
+            }
+        }.start();
+        super.onResume();
     }
 
     private void showPopupWindow(View view) {

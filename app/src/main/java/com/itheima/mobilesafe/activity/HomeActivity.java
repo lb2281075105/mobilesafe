@@ -66,6 +66,8 @@ public class HomeActivity extends AppCompatActivity {
 
                         break;
                     case 3:
+                        startActivity(new Intent(getApplicationContext(),ProcessActivity.class));
+
                         break;
                     case 4:
                         break;
