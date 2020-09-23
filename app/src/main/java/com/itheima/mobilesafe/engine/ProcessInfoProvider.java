@@ -157,4 +157,23 @@ public class ProcessInfoProvider {
 		//2,杀死指定包名进程(权限)
 		am.killBackgroundProcesses(processInfo.packageName);
 	}
+	/**
+	 * 杀死所有进程
+	 * @param ctx	上下文环境
+	 */
+	public static void killAll(Context ctx) {
+		//1,获取activityManager
+		ActivityManager am = (ActivityManager) ctx.getSystemService(Context.ACTIVITY_SERVICE);
+		//2,获取正在运行进程的集合
+		List<RunningAppProcessInfo> runningAppProcesses = am.getRunningAppProcesses();
+		//3,循环遍历所有的进程,并且杀死
+		for (RunningAppProcessInfo info : runningAppProcesses) {
+			//4,除了手机卫士以外,其他的进程都需要去杀死
+			if(info.processName.equals(ctx.getPackageName())){
+				//如果匹配上了手机卫士,则需要跳出本次循环,进行下一次寻,继续杀死进程
+				continue;
+			}
+			am.killBackgroundProcesses(info.processName);
+		}
+	}
 }

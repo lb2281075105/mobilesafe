@@ -77,7 +77,7 @@
         <service android:name=".service.LocationService" />
         <service android:name=".service.AddressService" />
         <service android:name=".service.BlackNumberService"/>
-
+        <service android:name=".service.LockScreenService"/>
     </application>
 
 </manifest>
