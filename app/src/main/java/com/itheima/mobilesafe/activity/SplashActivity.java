@@ -111,6 +111,8 @@ public class SplashActivity extends AppCompatActivity {
 
 
         initDB("address.db");
+        initDB("commonnum.db");
+
         boolean aBoolean = SpUtil.getBoolean(getApplicationContext(), ConstantValue.HAS_SHORTCUT, false);
         if (!aBoolean){
             // 生成快捷方式

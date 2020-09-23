@@ -30,7 +30,19 @@ public class AToolActivity extends AppCompatActivity {
 
         initUI();
 
+        initCommonNumberQuery();
     }
+
+    private void initCommonNumberQuery() {
+        TextView tv_some_phone = findViewById(R.id.tv_some_phone);
+        tv_some_phone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),CommonNumberQueryActivity.class));
+            }
+        });
+    }
+
     public void initUI(){
 
         phone_address = findViewById(R.id.tv_query_phone_address);
