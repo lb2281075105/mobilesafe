@@ -27,6 +27,10 @@
     <uses-permission android:name="android.permission.READ_SMS" />
 
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES" />
+    <uses-permission android:name="android.permission.INSTALL_SHORTCUT"/>
+    <uses-permission android:name="android.permission.UNINSTALL_SHORTCUT"/>
+
+
     <application
         android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
@@ -42,7 +46,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activity.HomeActivity" />
+        <activity android:name=".activity.HomeActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.HOME" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </activity>
         <activity android:name=".activity.SettingActivity" />
         <activity android:name=".activity.TestActivity" />
         <activity

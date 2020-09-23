@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -21,6 +22,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.itheima.mobilesafe.R;
+import com.itheima.mobilesafe.utils.ConstantValue;
+import com.itheima.mobilesafe.utils.SpUtil;
 
 import org.json.JSONObject;
 
@@ -108,7 +111,30 @@ public class SplashActivity extends AppCompatActivity {
 
 
         initDB("address.db");
+        boolean aBoolean = SpUtil.getBoolean(getApplicationContext(), ConstantValue.HAS_SHORTCUT, false);
+        if (!aBoolean){
+            // 生成快捷方式
+            initShortCut();
+        }
+
     }
+
+    /**
+     * 生成快捷方式
+     */
+    private void initShortCut() {
+        Intent intent = new Intent("com.android.launcher.action.INSTALL_SHORTCUT");
+        intent.putExtra(Intent.EXTRA_SHORTCUT_ICON, BitmapFactory.decodeResource(getResources(), R.drawable.main_clean_icon));
+        intent.putExtra(Intent.EXTRA_SHORTCUT_NAME,"手机卫士快捷");
+
+        Intent intent1 = new Intent("android.intent.action.HOME");
+        intent1.addCategory("android.intent.category.DEFAULT");
+        intent.putExtra(Intent.EXTRA_SHORTCUT_INTENT,intent1);
+
+        sendBroadcast(intent);
+        SpUtil.putBoolean(getApplicationContext(), ConstantValue.HAS_SHORTCUT,false);
+    }
+
     public void initDB(String dbName){
 
         File files = getFilesDir();
