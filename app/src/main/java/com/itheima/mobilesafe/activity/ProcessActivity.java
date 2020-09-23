@@ -24,6 +24,8 @@ import com.itheima.mobilesafe.R;
 import com.itheima.mobilesafe.db.domain.AppInfo;
 import com.itheima.mobilesafe.db.domain.ProcessInfo;
 import com.itheima.mobilesafe.engine.ProcessInfoProvider;
+import com.itheima.mobilesafe.utils.ConstantValue;
+import com.itheima.mobilesafe.utils.SpUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -176,7 +178,16 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     private void set() {
-        startActivity(new Intent(getApplicationContext(),ProcessSetActivity.class));
+        startActivityForResult(new Intent(getApplicationContext(),ProcessSetActivity.class),0);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (myAdapter != null){
+            myAdapter.notifyDataSetChanged();
+        }
+
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     private void clear() {
@@ -268,7 +279,13 @@ public class ProcessActivity extends AppCompatActivity implements View.OnClickLi
 
         @Override
         public int getCount() {
-            return mCustomerList.size() + mSystemList.size() + 2;
+            boolean show_system = SpUtil.getBoolean(getApplicationContext(), ConstantValue.SHOW_SYSTEM, false);
+
+            if (show_system){
+                return mCustomerList.size() + mSystemList.size() + 2;
+            }else {
+                return mCustomerList.size() + 1;
+            }
         }
 
         @Override
