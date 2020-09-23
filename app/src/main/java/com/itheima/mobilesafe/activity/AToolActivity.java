@@ -31,6 +31,21 @@ public class AToolActivity extends AppCompatActivity {
         initUI();
 
         initCommonNumberQuery();
+
+        initChengXuSuo();
+    }
+
+    /**
+     * 程序锁
+     */
+    private void initChengXuSuo() {
+        TextView tv_chengxusuo = findViewById(R.id.tv_chengxusuo);
+        tv_chengxusuo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getApplicationContext(),AppLockActivity.class));
+            }
+        });
     }
 
     private void initCommonNumberQuery() {

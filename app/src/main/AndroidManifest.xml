@@ -70,6 +70,8 @@
         <activity android:name=".activity.ProcessActivity"/>
         <activity android:name=".activity.ProcessSetActivity"/>
         <activity android:name=".activity.CommonNumberQueryActivity"/>
+        <activity android:name=".activity.AppLockActivity"/>
+
         <receiver android:name=".receiver.BootReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
@@ -81,6 +83,13 @@
                 <!--接收收到信息的广播-->
             </intent-filter>
         </receiver>
+<!--        <receiver android:name=".receiver.MyAppWidgetProvider">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />-->
+<!--            </intent-filter>-->
+<!--            <meta-data android:name="android.appwidget.provider"-->
+<!--                android:resource=""/>-->
+<!--        </receiver>-->
         
         <service android:name=".service.LocationService" />
         <service android:name=".service.AddressService" />

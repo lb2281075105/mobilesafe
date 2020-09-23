@@ -1,6 +1,7 @@
 package com.itheima.mobilesafe.activity;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -76,19 +77,25 @@ public class CommonNumberQueryActivity extends AppCompatActivity {
         intent.setData(Uri.parse("tel:" + phone));
 
 //        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CALL_PHONE) != PackageManager.PERMISSION_GRANTED) {
-//            // TODO: Consider calling
-//            //    ActivityCompat#requestPermissions
-////             here to request the missing permissions, and then overriding
-////               public void onRequestPermissionsResult(int requestCode, String[] permissions,
-////                                                      int[] grantResults)
-////             to handle the case where the user grants the permission. See the documentation
-////             for ActivityCompat#requestPermissions for more details.
-//            ActivityCompat.requestPermissions(getApplicationContext(),new String[]{Manifest.permission.CALL_PHONE},cal);
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+//             here to request the missing permissions, and then overriding
+//               public void onRequestPermissionsResult(int requestCode, String[] permissions,
+//                                                      int[] grantResults)
+//             to handle the case where the user grants the permission. See the documentation
+//             for ActivityCompat#requestPermissions for more details.
+//            ActivityCompat.requestPermissions((Activity) getApplicationContext(),new String[]{Manifest.permission.CALL_PHONE},0);
 //            Log.e("HHH",phone);
 //            return;
 //        }
         startActivity(intent);
 
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     class MyAdapter extends BaseExpandableListAdapter {
