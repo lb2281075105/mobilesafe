@@ -72,6 +72,8 @@ public class HomeActivity extends AppCompatActivity {
                     case 4:
                         break;
                     case 5:
+                        startActivity(new Intent(getApplicationContext(),AnitVirusActivity.class));
+
                         break;
                     case 6:
                         break;

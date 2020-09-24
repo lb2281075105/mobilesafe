@@ -30,6 +30,7 @@
     <uses-permission android:name="android.permission.INSTALL_SHORTCUT"/>
     <uses-permission android:name="android.permission.UNINSTALL_SHORTCUT"/>
 
+    <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <application
         android:requestLegacyExternalStorage="true"
@@ -71,6 +72,11 @@
         <activity android:name=".activity.ProcessSetActivity"/>
         <activity android:name=".activity.CommonNumberQueryActivity"/>
         <activity android:name=".activity.AppLockActivity"/>
+        <!-- excludeFromRecents=false 显示应用的图标 -->
+        <activity android:name=".activity.EnterPsdActivity"
+            android:launchMode="singleInstance"
+            android:excludeFromRecents="true"/>
+        <activity android:name=".activity.AnitVirusActivity"/>
 
         <receiver android:name=".receiver.BootReceiver">
             <intent-filter>

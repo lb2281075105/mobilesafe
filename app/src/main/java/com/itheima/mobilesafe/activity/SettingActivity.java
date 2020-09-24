@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.itheima.mobilesafe.R;
 import com.itheima.mobilesafe.service.AddressService;
 import com.itheima.mobilesafe.service.BlackNumberService;
+import com.itheima.mobilesafe.service.WatchDogService;
 import com.itheima.mobilesafe.utils.ConstantValue;
 import com.itheima.mobilesafe.utils.ServiceUtil;
 import com.itheima.mobilesafe.utils.SpUtil;
@@ -37,6 +38,29 @@ public class SettingActivity extends AppCompatActivity {
 
         // 吐司样式
         initToast();
+        // 程序枷锁
+        initAppLock();
+    }
+
+    private void initAppLock() {
+
+        // 4.
+        final SettingItemView chengView = findViewById(R.id.cheng_address);
+        boolean isRunning = ServiceUtil.isRunning(getApplicationContext(), "com.itheima.mobilesafe.service.WatchDogService");
+
+        chengView.setCheck(isRunning);
+        chengView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                boolean ischeck = chengView.isCheck();
+                chengView.setCheck(!ischeck);
+                if (!ischeck) {
+                    startService(new Intent(getApplicationContext(), WatchDogService.class));
+                } else {
+                    stopService(new Intent(getApplicationContext(), WatchDogService.class));
+                }
+            }
+        });
     }
 
     public void initToast() {
@@ -86,9 +110,7 @@ public class SettingActivity extends AppCompatActivity {
             }
         });
 
-        // 4.
-        final SettingItemView chengView = findViewById(R.id.cheng_address);
-        chengView.setCheck(true);
+
     }
 
     public void showToastStyle() {

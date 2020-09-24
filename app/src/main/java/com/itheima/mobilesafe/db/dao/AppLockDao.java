@@ -8,14 +8,17 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.Uri;
 
 import com.itheima.mobilesafe.db.AppLockOpenHelper;
 
 public class AppLockDao {
 	private AppLockOpenHelper appLockOpenHelper;
+	private Context context;
 	//BlackNumberDao单例模式
 	//1,私有化构造方法
 	private AppLockDao(Context context){
+		this.context = context;
 		//创建数据库已经其表机构
 		appLockOpenHelper = new AppLockOpenHelper(context);
 	}
@@ -37,7 +40,10 @@ public class AppLockDao {
 		contentValues.put("packagename", packagename);
 		
 		db.insert("applock", null, contentValues);
+		
 		db.close();
+		
+		context.getContentResolver().notifyChange(Uri.parse("content://applock/change"), null);
 	}
 	//删除方法
 	public void delete(String packagename){
@@ -49,6 +55,8 @@ public class AppLockDao {
 		db.delete("applock", "packagename = ?", new String[]{packagename});
 		
 		db.close();
+		
+		context.getContentResolver().notifyChange(Uri.parse("content://applock/change"), null);
 	}
 	//查询所有
 	public List<String> findAll(){
