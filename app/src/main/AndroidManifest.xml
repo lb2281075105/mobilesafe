@@ -77,6 +77,7 @@
             android:launchMode="singleInstance"
             android:excludeFromRecents="true"/>
         <activity android:name=".activity.AnitVirusActivity"/>
+        <activity android:name=".activity.CacheClearActivity"/>
 
         <receiver android:name=".receiver.BootReceiver">
             <intent-filter>
