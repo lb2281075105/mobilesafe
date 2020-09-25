@@ -33,6 +33,7 @@
     <uses-permission android:name="android.permission.GET_TASKS"/>
 
     <application
+        android:name=".global.MyApplication"
         android:requestLegacyExternalStorage="true"
         android:allowBackup="true"
         android:icon="@drawable/home_apps"
@@ -78,6 +79,7 @@
             android:excludeFromRecents="true"/>
         <activity android:name=".activity.AnitVirusActivity"/>
         <activity android:name=".activity.CacheClearActivity"/>
+        <activity android:name=".activity.BaseCacheClearActivity"/>
 
         <receiver android:name=".receiver.BootReceiver">
             <intent-filter>

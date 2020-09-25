@@ -76,7 +76,7 @@ public class HomeActivity extends AppCompatActivity {
 
                         break;
                     case 6:
-                        startActivity(new Intent(getApplicationContext(),CacheClearActivity.class));
+                        startActivity(new Intent(getApplicationContext(),BaseCacheClearActivity.class));
 
                         break;
                     case 7:
